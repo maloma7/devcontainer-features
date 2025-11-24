@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
         features:
-          - claude-code
+          - gemini-cli
         baseImage:
           - debian:latest
           - ubuntu:latest
@@ -33,7 +33,7 @@ jobs:
     strategy:
       matrix:
         features:
-          - claude-code
+          - gemini-cli
     steps:
       - uses: actions/checkout@v4
 
