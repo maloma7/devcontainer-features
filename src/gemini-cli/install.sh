@@ -54,7 +54,7 @@ install_nodejs() {
             install_packages apt "ca-certificates curl gnupg"
             mkdir -p /etc/apt/keyrings
             curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-            echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
+            echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list
             apt-get update
             apt-get install -y nodejs
             ;;
@@ -68,7 +68,7 @@ install_nodejs() {
             ;;
         yum)
             # CentOS/RHEL
-            curl -sL https://rpm.nodesource.com/setup_18.x | bash -
+            curl -sL https://rpm.nodesource.com/setup_20.x | bash -
             yum install -y nodejs
             ;;
         *)
@@ -87,17 +87,26 @@ install_nodejs() {
     fi
 }
 
-# Function to install Claude Code CLI
-install_claude_code() {
-    echo "Installing Claude Code CLI..."
-    npm install -g @anthropic-ai/claude-code
+# Function to install Google Gemini CLI
+install_gemini_cli() {
+    echo "Installing Google Gemini CLI..."
 
-    if command -v claude >/dev/null; then
-        echo "Claude Code CLI installed successfully!"
-        claude --version
+    # Get version from option (default: latest)
+    local VERSION="${VERSION:-latest}"
+    local PACKAGE="@google/gemini-cli"
+
+    if [ "$VERSION" = "latest" ]; then
+        npm install -g "$PACKAGE"
+    else
+        npm install -g "$PACKAGE@$VERSION"
+    fi
+
+    if command -v gemini >/dev/null; then
+        echo "Google Gemini CLI installed successfully!"
+        gemini --version
         return 0
     else
-        echo "ERROR: Claude Code CLI installation failed!"
+        echo "ERROR: Google Gemini CLI installation failed!"
         return 1
     fi
 }
@@ -110,8 +119,8 @@ ERROR: Node.js and npm are required but could not be installed!
 Please add the Node.js feature to your devcontainer.json:
 
   "features": {
-    "ghcr.io/devcontainers/features/node:1": {},
-    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
+    "ghcr.io/devcontainers/features/node:1": {"version": "20"},
+    "ghcr.io/maloma7/devcontainer-features/gemini-cli:1": {}
   }
 
 EOF
@@ -120,7 +129,7 @@ EOF
 
 # Main script starts here
 main() {
-    echo "Activating feature 'claude-code'"
+    echo "Activating feature 'gemini-cli'"
 
     # Detect package manager
     PKG_MANAGER=$(detect_package_manager)
@@ -132,8 +141,8 @@ main() {
         install_nodejs "$PKG_MANAGER" || print_nodejs_requirement
     fi
 
-    # Install Claude Code CLI
-    install_claude_code || exit 1
+    # Install Google Gemini CLI
+    install_gemini_cli || exit 1
 }
 
 # Execute main function

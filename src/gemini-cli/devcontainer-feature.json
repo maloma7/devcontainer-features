@@ -1,0 +1,25 @@
+{
+    "name": "Google Gemini CLI",
+    "id": "gemini-cli",
+    "version": "1.0.0",
+    "description": "Installs the Google Gemini CLI globally",
+    "options": {
+        "version": {
+            "type": "string",
+            "default": "latest",
+            "description": "Specific version of Gemini CLI to install (e.g., '0.17.1' or 'latest')"
+        }
+    },
+    "documentationURL": "https://github.com/maloma7/devcontainer-features/tree/main/src/gemini-cli",
+    "licenseURL": "https://github.com/maloma7/devcontainer-features/blob/main/LICENSE",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Google.gemini-cli-vscode-ide-companion"
+            ]
+        }
+    },
+    "installsAfter": [
+        "ghcr.io/devcontainers/features/node"
+    ]
+}

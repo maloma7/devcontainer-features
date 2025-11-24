@@ -19,6 +19,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # Editor specific files
+.gemini
 .vscode/*
 !.vscode/extensions.json
 .idea/
