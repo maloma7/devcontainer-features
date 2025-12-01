@@ -1,0 +1,15 @@
+{
+    "name": "TruffleHog",
+    "id": "trufflehog",
+    "version": "1.0.0",
+    "description": "TruffleHog is a secrets scanner for detecting and verifying leaked credentials in git repos, filesystems, S3, GCS, and more.",
+    "options": {
+        "version": {
+            "type": "string",
+            "default": "latest",
+            "description": "Version of TruffleHog to install (e.g., '3.91.1' or 'latest')"
+        }
+    },
+    "documentationURL": "https://github.com/maloma7/devcontainer-features/tree/main/src/trufflehog",
+    "licenseURL": "https://github.com/maloma7/devcontainer-features/blob/main/LICENSE"
+}
