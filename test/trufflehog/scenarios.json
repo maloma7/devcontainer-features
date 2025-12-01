@@ -1,0 +1,16 @@
+{
+    "basic": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "trufflehog": {}
+        }
+    },
+    "specific_version": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "trufflehog": {
+                "version": "3.88.0"
+            }
+        }
+    }
+}
