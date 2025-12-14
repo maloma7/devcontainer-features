@@ -1,15 +1,19 @@
 # Dev Container Features
 
-This repository contains [Dev Container Features](https://containers.dev/implementors/features/), including one that installs the Google Gemini CLI.
+This repository contains [Dev Container Features](https://containers.dev/implementors/features/) for development tools.
 
 ## Contents
 
-- `src/gemini-cli`: The Google Gemini CLI feature
-- `test`: Automated tests for the feature
+- `src/gemini-cli`: Google Gemini CLI - AI agent for your terminal
+- `src/biome`: BiomeJS - Fast formatter and linter for JavaScript, TypeScript, JSON, CSS, and more
+- `src/trufflehog`: TruffleHog - Secrets scanner for detecting leaked credentials
+- `test`: Automated tests for all features
 
-## Usage
+## Features
 
-To use this feature in your devcontainer, add it to your `devcontainer.json` file:
+### Gemini CLI
+
+Google Gemini CLI - AI agent for your terminal with 1M token context window.
 
 ```json
 "features": {
@@ -17,8 +21,7 @@ To use this feature in your devcontainer, add it to your `devcontainer.json` fil
 }
 ```
 
-### With Specific Version
-
+**With specific version:**
 ```json
 "features": {
     "ghcr.io/maloma7/devcontainer-features/gemini-cli:1": {
@@ -27,51 +30,75 @@ To use this feature in your devcontainer, add it to your `devcontainer.json` fil
 }
 ```
 
-### Recommended Configuration
+**Requirements:** Node.js 18+ (automatically installed if not present)
 
-For best results, explicitly include the Node.js feature:
+See [Gemini CLI documentation](./src/gemini-cli/NOTES.md) for authentication and usage.
+
+### BiomeJS
+
+Fast formatter and linter for JavaScript, TypeScript, JSX, JSON, CSS, and more.
 
 ```json
 "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-        "version": "20"
-    },
-    "ghcr.io/maloma7/devcontainer-features/gemini-cli:1": {}
+    "ghcr.io/maloma7/devcontainer-features/biome:1": {}
 }
 ```
 
-## Requirements
+**With specific version:**
+```json
+"features": {
+    "ghcr.io/maloma7/devcontainer-features/biome:1": {
+        "version": "2.3.8"
+    }
+}
+```
 
-The feature requires Node.js 18+ (20+ recommended) and will automatically install it if not already present.
+See [BiomeJS documentation](./src/biome/NOTES.md) for usage examples.
 
-## Authentication
+### TruffleHog
 
-After installing, run `gemini` in your terminal and follow the browser authentication flow to connect with your Google account. See the [feature documentation](./src/gemini-cli/NOTES.md) for details on authentication methods.
+Secrets scanner for detecting and verifying leaked credentials.
+
+```json
+"features": {
+    "ghcr.io/maloma7/devcontainer-features/trufflehog:1": {}
+}
+```
+
+**With specific version:**
+```json
+"features": {
+    "ghcr.io/maloma7/devcontainer-features/trufflehog:1": {
+        "version": "3.87.0"
+    }
+}
+```
+
+See [TruffleHog documentation](./src/trufflehog/NOTES.md) for usage examples.
 
 ## Building and Testing
 
-You can build and test the feature using the [dev container CLI](https://github.com/devcontainers/cli):
+You can build and test features using the [dev container CLI](https://github.com/devcontainers/cli):
 
 ```bash
-# Test the feature
+# Test a specific feature
 devcontainer features test -f gemini-cli .
+devcontainer features test -f biome .
+devcontainer features test -f trufflehog .
 
-# Publish the feature
+# Test all features
+devcontainer features test .
+
+# Publish features
 devcontainer features publish -n maloma7/devcontainer-features .
 ```
-
-## About Gemini CLI
-
-[Gemini CLI](https://github.com/google-gemini/gemini-cli) is an open-source AI agent from Google that brings the power of Gemini directly into your terminal. It includes:
-
-- Access to Gemini 2.5 Pro with 1M token context window
-- Built-in tools (Google Search, file operations, shell commands, web fetching)
-- MCP (Model Context Protocol) support
-- Extensions ecosystem
-- VS Code integration
 
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-Gemini CLI itself is licensed under Apache 2.0.
+### Upstream Licenses
+
+- Gemini CLI: Apache 2.0
+- BiomeJS: MIT
+- TruffleHog: AGPL 3.0

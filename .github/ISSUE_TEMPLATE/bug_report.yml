@@ -1,0 +1,127 @@
+name: Bug Report
+description: Report a bug or issue with a devcontainer feature
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the information below to help us resolve the issue.
+
+  - type: dropdown
+    id: feature
+    attributes:
+      label: Which feature is affected?
+      description: Select the feature that has the bug
+      options:
+        - gemini-cli
+        - biome
+        - trufflehog
+        - Other/Multiple
+    validations:
+      required: true
+
+  - type: input
+    id: feature-version
+    attributes:
+      label: Feature Version
+      description: What version of the feature are you using? (e.g., "1.0.0", "latest")
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: base-image
+    attributes:
+      label: Base Image
+      description: What base image are you using?
+      placeholder: "mcr.microsoft.com/devcontainers/base:ubuntu"
+    validations:
+      required: true
+
+  - type: input
+    id: tool-version
+    attributes:
+      label: Tool Version (if applicable)
+      description: What version of the underlying tool was installed? (e.g., gemini-cli 0.17.1, biome 2.3.8, trufflehog 3.87.0)
+      placeholder: "gemini-cli 0.17.1"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is
+      placeholder: Tell us what went wrong
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: Describe the expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Describe what actually happened
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this issue?
+      placeholder: |
+        1. Use this devcontainer.json configuration...
+        2. Run this command...
+        3. See error...
+    validations:
+      required: true
+
+  - type: textarea
+    id: devcontainer-config
+    attributes:
+      label: Devcontainer Configuration
+      description: Please paste your devcontainer.json configuration (or the relevant features section)
+      placeholder: |
+        {
+          "features": {
+            "ghcr.io/maloma7/devcontainer-features/gemini-cli:1": {
+              "version": "latest"
+            }
+          }
+        }
+      render: json
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs/Error Messages
+      description: Please paste any relevant logs or error messages
+      placeholder: Paste logs here
+      render: shell
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here (screenshots, workarounds, etc.)
+      placeholder: Any additional information that might help
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our Code of Conduct
+      options:
+        - label: I have searched for similar issues and didn't find a duplicate
+          required: true
+        - label: I have read the feature documentation
+          required: true

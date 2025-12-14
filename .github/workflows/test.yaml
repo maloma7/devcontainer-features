@@ -14,6 +14,8 @@ jobs:
       matrix:
         features:
           - gemini-cli
+          - biome
+          - trufflehog
         baseImage:
           - debian:latest
           - ubuntu:latest
@@ -34,6 +36,8 @@ jobs:
       matrix:
         features:
           - gemini-cli
+          - biome
+          - trufflehog
     steps:
       - uses: actions/checkout@v4
 

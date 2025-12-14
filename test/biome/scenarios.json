@@ -1,0 +1,28 @@
+{
+    "basic": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "biome": {}
+        }
+    },
+    "specific_version": {
+        "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+        "features": {
+            "biome": {
+                "version": "2.3.8"
+            }
+        }
+    },
+    "alpine": {
+        "image": "mcr.microsoft.com/devcontainers/base:alpine",
+        "features": {
+            "biome": {}
+        }
+    },
+    "debian": {
+        "image": "mcr.microsoft.com/devcontainers/base:debian",
+        "features": {
+            "biome": {}
+        }
+    }
+}
