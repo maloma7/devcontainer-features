@@ -1,0 +1,22 @@
+{
+    "name": "BiomeJS",
+    "id": "biome",
+    "version": "1.0.0",
+    "description": "Installs BiomeJS, a fast formatter and linter for JavaScript, TypeScript, JSX, JSON, CSS, and more.",
+    "options": {
+        "version": {
+            "type": "string",
+            "default": "latest",
+            "description": "Version of BiomeJS to install (e.g., '2.3.8' or 'latest')"
+        }
+    },
+    "documentationURL": "https://github.com/maloma7/devcontainer-features/tree/main/src/biome",
+    "licenseURL": "https://github.com/maloma7/devcontainer-features/blob/main/LICENSE",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "biomejs.biome"
+            ]
+        }
+    }
+}
