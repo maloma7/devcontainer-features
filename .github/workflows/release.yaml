@@ -7,13 +7,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  publish:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
       packages: write
+    outputs:
+      features: ${{ steps.discover.outputs.features }}
     steps:
       - uses: actions/checkout@v4
 
@@ -23,9 +25,16 @@ jobs:
           publish-features: "true"
           base-path-to-features: "./src"
           generate-docs: "true"
-
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Discover Features"
+        id: discover
+        run: |
+          # Auto-discover all features from src directory and output as JSON array
+          features=$(find ./src -maxdepth 1 -mindepth 1 -type d -exec basename {} \; | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "features=$features" >> $GITHUB_OUTPUT
+          echo "Discovered features: $features"
 
       - name: Create PR for Documentation
         id: push_image_info
@@ -84,3 +93,52 @@ jobs:
 
           # Create PR
           gh pr create --title "$message" --body "$message" --head "$branch" --base "main" || echo "No changes to create PR for"
+
+  attest:
+    needs: publish
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      attestations: write
+      packages: read
+    strategy:
+      matrix:
+        feature: ${{ fromJson(needs.publish.outputs.features) }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Get Feature Digest"
+        id: digest
+        run: |
+          feature="${{ matrix.feature }}"
+          echo "Processing feature: $feature"
+
+          # Read version from devcontainer-feature.json
+          version=$(jq -r '.version' "./src/${feature}/devcontainer-feature.json")
+          major_version=$(echo "$version" | cut -d. -f1)
+
+          # Construct image reference
+          image_name="ghcr.io/${{ github.repository }}/${feature}"
+          image_ref="${image_name}:${major_version}"
+
+          echo "Fetching digest for: $image_ref"
+
+          # Get digest using docker buildx imagetools
+          digest=$(docker buildx imagetools inspect "$image_ref" \
+            --format '{{json .Manifest.Digest}}' | tr -d '"')
+
+          if [ -z "$digest" ] || [ "$digest" = "null" ]; then
+            echo "::error::Could not retrieve digest for $image_ref"
+            exit 1
+          fi
+
+          echo "image_name=$image_name" >> $GITHUB_OUTPUT
+          echo "digest=$digest" >> $GITHUB_OUTPUT
+          echo "✓ $feature: $digest"
+
+      - name: "Generate Attestation"
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ${{ steps.digest.outputs.image_name }}
+          subject-digest: ${{ steps.digest.outputs.digest }}

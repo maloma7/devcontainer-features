@@ -1,4 +1,3 @@
-
 # Google Gemini CLI (gemini-cli)
 
 Installs the Google Gemini CLI globally
@@ -16,6 +15,20 @@ Installs the Google Gemini CLI globally
 | Options Id | Description | Type | Default Value |
 |-----|-----|-----|-----|
 | version | Specific version of Gemini CLI to install (e.g., '0.17.1' or 'latest') | string | latest |
+
+## Supply Chain Security
+
+This feature includes SLSA Build Level 2 provenance attestation. Verify authenticity before use:
+
+```bash
+gh attestation verify \
+  oci://ghcr.io/maloma7/devcontainer-features/gemini-cli:1 \
+  --owner maloma7
+```
+
+This proves the feature was built from [maloma7/devcontainer-features](https://github.com/maloma7/devcontainer-features) using GitHub Actions.
+
+For details, see [SECURITY.md](../../SECURITY.md).
 
 ## Customizations
 

@@ -1,12 +1,12 @@
-# BiomeJS (biome)
+# gitlint via uv (gitlint)
 
-Fast formatter and linter for JavaScript, TypeScript, JSX, JSON, CSS, and more.
+Git commit message linter written in Python, checks your commit messages for style. Installed using [uv](https://docs.astral.sh/uv/).
 
 ## Example Usage
 
 ```json
 "features": {
-    "ghcr.io/maloma7/devcontainer-features/biome:1": {}
+    "ghcr.io/maloma7/devcontainer-features/gitlint:1": {}
 }
 ```
 
@@ -14,7 +14,7 @@ Fast formatter and linter for JavaScript, TypeScript, JSX, JSON, CSS, and more.
 
 | Options Id | Description | Type | Default Value |
 |-----|-----|-----|-----|
-| version | Version of BiomeJS to install (e.g., '2.3.8' or 'latest') | string | latest |
+| version | Version of gitlint to install (e.g., '0.19.1' or 'latest') | string | latest |
 
 ## Supply Chain Security
 
@@ -22,7 +22,7 @@ This feature includes SLSA Build Level 2 provenance attestation. Verify authenti
 
 ```bash
 gh attestation verify \
-  oci://ghcr.io/maloma7/devcontainer-features/biome:1 \
+  oci://ghcr.io/maloma7/devcontainer-features/gitlint:1 \
   --owner maloma7
 ```
 
@@ -32,7 +32,7 @@ For details, see [SECURITY.md](../../SECURITY.md).
 
 ## Documentation
 
-For more information, see the [BiomeJS documentation](https://biomejs.dev/).
+For more information, see the [gitlint documentation](https://jorisroovers.github.io/gitlint/).
 
 ---
 

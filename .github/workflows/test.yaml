@@ -16,6 +16,7 @@ jobs:
           - gemini-cli
           - biome
           - trufflehog
+          - gitlint
         baseImage:
           - debian:latest
           - ubuntu:latest
@@ -38,6 +39,7 @@ jobs:
           - gemini-cli
           - biome
           - trufflehog
+          - gitlint
     steps:
       - uses: actions/checkout@v4
 
