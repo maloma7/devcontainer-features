@@ -14,6 +14,8 @@ jobs:
       contents: write
       pull-requests: write
       packages: write
+      id-token: write        # Required for OIDC token generation (Sigstore)
+      attestations: write    # Required for creating attestations
     steps:
       - uses: actions/checkout@v4
 
@@ -26,6 +28,63 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Retrieve Feature Digests and Attest"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+
+          # Auto-discover all features from src directory
+          features=($(find ./src -maxdepth 1 -mindepth 1 -type d -exec basename {} \;))
+
+          SUBJECT_NAMES=""
+          SUBJECT_DIGESTS=""
+
+          for feature in "${features[@]}"; do
+            echo "Processing feature: $feature"
+
+            # Read version from devcontainer-feature.json
+            version=$(jq -r '.version' "./src/${feature}/devcontainer-feature.json")
+            major_version=$(echo "$version" | cut -d. -f1)
+
+            # Construct image reference (use major version tag)
+            image_name="ghcr.io/${{ github.repository }}/${feature}"
+            image_ref="${image_name}:${major_version}"
+
+            echo "Fetching digest for: $image_ref"
+
+            # Use docker buildx imagetools (pre-installed on GitHub runners)
+            # No additional tools needed!
+            digest=$(docker buildx imagetools inspect "$image_ref" \
+              --format '{{json .Manifest.Digest}}' | tr -d '"')
+
+            if [ -z "$digest" ] || [ "$digest" = "null" ]; then
+              echo "::error::Could not retrieve digest for $image_ref"
+              exit 1
+            fi
+
+            echo "✓ $feature: $digest"
+
+            # Build subject lists (newline-delimited for multi-subject attestation)
+            SUBJECT_NAMES="${SUBJECT_NAMES}${image_name}"$'\n'
+            SUBJECT_DIGESTS="${SUBJECT_DIGESTS}${digest}"$'\n'
+          done
+
+          # Save for attestation step
+          echo "SUBJECT_NAMES<<EOF" >> $GITHUB_ENV
+          echo "$SUBJECT_NAMES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          echo "SUBJECT_DIGESTS<<EOF" >> $GITHUB_ENV
+          echo "$SUBJECT_DIGESTS" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: "Generate Attestations for All Features"
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-name: ${{ env.SUBJECT_NAMES }}
+          subject-digest: ${{ env.SUBJECT_DIGESTS }}
 
       - name: Create PR for Documentation
         id: push_image_info

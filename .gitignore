@@ -20,12 +20,16 @@ yarn-error.log*
 
 # Editor specific files
 .gemini
+.claude/
 .vscode/*
 !.vscode/extensions.json
 .idea/
 *.swp
 *.swo
 *~
+
+# Environment files
+.env
 
 # Test artifacts
 test-results/

@@ -1,0 +1,15 @@
+{
+    "name": "gitlint (via uv)",
+    "id": "gitlint",
+    "version": "1.0.0",
+    "description": "Installs gitlint (git commit message linter) using uv",
+    "options": {
+        "version": {
+            "type": "string",
+            "default": "latest",
+            "description": "Version of gitlint to install (e.g., '0.19.1' or 'latest')"
+        }
+    },
+    "documentationURL": "https://github.com/maloma7/devcontainer-features/tree/main/src/gitlint",
+    "licenseURL": "https://github.com/maloma7/devcontainer-features/blob/main/LICENSE"
+}
